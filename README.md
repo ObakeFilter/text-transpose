@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Text Transpose
 
-## Getting Started
+A small web page that transposes text.
 
-First, run the development server:
+- **Columns to rows** (default): transposes a whole table, so columns become rows. The separator is auto-detected (tab, comma, semicolon, pipe) or chosen by hand, and short rows are padded with empty cells. A list with one item per line, and no separator, comes out as a single tab-separated row.
+- **Lines to one row**: every line becomes one cell of a single row and is never split further, which keeps spaces inside items. This is what the original version of the page did (newlines replaced by tabs).
+
+The transpose logic lives in `lib/transpose.ts`; the page is `app/page.tsx`.
+
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open <http://localhost:3000/text-transpose>. The app is exported as a static site with the base path `/text-transpose`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The site is a static export (`output: "export"`), so any static host works.
 
-## Learn More
+**GitHub Pages (default).** Pushes to `main` run `.github/workflows/deploy.yml`, which builds the site and publishes the `out` folder. In the repository settings, set **Pages → Source** to **GitHub Actions** once. The site is then served at `https://obakefilter.github.io/text-transpose/`.
 
-To learn more about Next.js, take a look at the following resources:
+**Root deployments (Vercel, Netlify, a custom domain).** Build with an empty base path:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+NEXT_PUBLIC_BASE_PATH="" npm run build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+and serve the `out` folder.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Manual publish to the `gh-pages` branch.** `npm run deploy` still works and uses the same base path. `public/.nojekyll` is included so GitHub Pages serves the `_next` folder.
