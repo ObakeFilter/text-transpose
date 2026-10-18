@@ -16,7 +16,7 @@ const SAMPLES: Record<Mode, string> = {
 
 export default function Home() {
   const [mode, setMode] = useState<Mode>("table");
-  const [input, setInput] = useState(SAMPLES.table);
+  const [input, setInput] = useState("");
   const [inSep, setInSep] = useState<InputSeparator>("auto");
   const [outSep, setOutSep] = useState<OutputSeparator>("same");
   const [status, setStatus] = useState("");
@@ -29,7 +29,6 @@ export default function Home() {
 
   function changeMode(next: Mode) {
     setMode(next);
-    setInput(SAMPLES[next]);
     setStatus("");
   }
 
@@ -111,7 +110,7 @@ export default function Home() {
           </select>
         </div>
         <div className="tt-spacer" />
-        <button type="button" onClick={() => changeMode(mode)}>
+        <button type="button" onClick={() => setInput(SAMPLES[mode])}>
           Load example
         </button>
         <button type="button" className="tt-primary" onClick={copy}>
